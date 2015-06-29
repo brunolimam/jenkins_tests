@@ -7,5 +7,6 @@ RUN apt-get -y install ruby rake
 RUN gem install rake
 RUN gem install bundler
 RUN gem install i18n
+RUN gem install minitest
 
 RUN gem install --no-rdoc --no-ri rspec ci_reporter_rspec
