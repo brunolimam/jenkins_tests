@@ -187,7 +187,7 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 1.2)
   jquery-rails
-  minitest
+  minitest (= 4.7.5)
   rails (= 4.0.12)
   rspec-rails
   sass-rails (~> 4.0.2)
