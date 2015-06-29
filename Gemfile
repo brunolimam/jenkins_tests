@@ -9,6 +9,7 @@ gem 'guard-rspec'
 gem 'factory_girl_rails'
 gem 'bundler'
 gem 'minitest', '4.7.5'
+gem 'minitest-reporter'
 
 group :test do
   gem 'capybara'
