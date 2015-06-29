@@ -7,7 +7,7 @@ gem 'rspec-rails'
 gem 'guard-bundler'
 gem 'guard-rspec'
 gem 'factory_girl_rails'
-
+gem 'bundler'
 group :test do
   gem 'capybara'
 end
