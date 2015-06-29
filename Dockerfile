@@ -4,7 +4,6 @@ ENV REFRESHED_AT 2014-06-01
 RUN apt-get update
 RUN apt-get -y install ruby rake
 
-RUN gem install minitest
 RUN gem install rake
 RUN gem install bundler
 RUN gem install i18n
