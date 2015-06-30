@@ -11,8 +11,8 @@ RUN apt-get install -y openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-
 # install RVM, Ruby, and Bundler
 ENV     RVM_DIR $HOME/.rvm
 RUN /bin/bash -l -c “\curl -sSL https://get.rvm.io | bash -s stable”
-RUN     $RVM_DIR/scripts/rvm
-RUN     echo "source ~/.rvm/scripts/rvm" >> $HOME/.bashrc
+RUN /bin/bash -l -c “$RVM_DIR/scripts/rvm”
+RUN /bin/bash -l -c “echo "source ~/.rvm/scripts/rvm" >> $HOME/.bashrc”
 
 
 
