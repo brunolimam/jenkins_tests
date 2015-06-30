@@ -8,6 +8,7 @@ gem 'guard-bundler'
 gem 'guard-rspec'
 gem 'factory_girl_rails'
 gem 'bundler'
+gem 'ci_reporter'
 
 group :test do
   gem 'capybara'
