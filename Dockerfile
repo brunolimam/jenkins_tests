@@ -10,7 +10,7 @@ RUN apt-get install -y openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-
  
 # install RVM, Ruby, and Bundler
 RUN /bin/bash -l -c “\curl -sSL https://get.rvm.io | bash -s stable”
+RUN /bin/bash -l -c "rvm requirements”
 RUN /bin/bash -l -c "rvm install 2.1.5”
 RUN /bin/bash -l -c "gem install bundler --no-ri --no-rdoc rspec ci_reporter_rspec"
 
-\curl -sSL https://get.rvm.io | bash -s stable
