@@ -3,4 +3,17 @@
 
 require File.expand_path('../config/application', __FILE__)
 
+require 'ci/reporter/rake/rspec'
+
+QualityMetric::Application.load_tasks
+namespace :db do
+  namespace :test do
+    task :load do
+      db_config = Rails.application.config.database_configuration['test']
+      sh "mysql -h #{db_config['host']}  -u#{db_config['username']} \
+        -p#{db_config['password']} #{db_config['database']} < ../mysql_qa7_qms_pro.sql"
+    end
+  end
+end
+
 MyFirstRailsApp::Application.load_tasks
