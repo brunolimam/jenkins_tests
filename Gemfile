@@ -11,7 +11,7 @@ gem 'bundler'
 
 gem 'simplecov'
 gem 'simplecov-rcov'
-gem 'ci_reporter'
+gem 'ci_reporter', :git => 'git://github.com/nicksieger/ci_reporter.git'
 
 group :test do
   gem 'capybara'
