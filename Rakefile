@@ -4,6 +4,6 @@
 require File.expand_path('../config/application', __FILE__)
 
 MyFirstRailsApp::Application.load_tasks
-
+require 'rspec/core/rake_task'
 require 'ci/reporter/rake/core'
-task :spec => 'ci:setup:rspec'
+task :rspec => 'ci:setup:rspec'
