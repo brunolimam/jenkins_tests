@@ -4,3 +4,8 @@
 require File.expand_path('../config/application', __FILE__)
 
 MyFirstRailsApp::Application.load_tasks
+
+if ENV['GENERATE_REPORTS'] == 'true'
+  require 'ci/reporter/rake/rspec'
+  task :rspec => 'ci:setup:rspec'
+end
