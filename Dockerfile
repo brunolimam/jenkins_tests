@@ -1,4 +1,8 @@
 FROM rails:onbuild
-MAINTAINER Zach Langer “zlanger@comverge.com"
-ENV REFRESHED_AT 2015-06-30
+MAINTAINER zach langer zlanger@comverge.com
+RUN apt-get update
+RUN apt-get install -y vim
+RUN apt-get install -y openssh-server
+RUN service ssh start
 EXPOSE 3000
+EXPOSE 22
