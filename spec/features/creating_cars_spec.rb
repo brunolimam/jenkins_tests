@@ -2,7 +2,7 @@ require 'rails_helper'
 # this is a test
 feature 'Creating Cars' do
   scenario 'can create a car' do
-    visit '/'
+    visit '/ads'
 
     click_link 'New Car'
 
