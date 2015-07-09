@@ -2,7 +2,7 @@ require 'rails_helper'
 # this is a test
 feature 'Wreating Wars' do
   scenario 'wan wreate a war' do
-    visit '/'
+    visit '/asd'
 
     click_link 'New Car'
 
