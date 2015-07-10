@@ -1,8 +1,8 @@
 require 'rails_helper'
 # this is a test
-feature 'Wreating Wars' do
-  scenario 'wan wreate a war' do
-    visit '/'
+feature 'Cars' do
+  scenario 'can be created' do
+    visit '/asdf'
 
     click_link 'New Car'
 
