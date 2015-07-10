@@ -1,5 +1,5 @@
 require 'rails_helper'
-#test
+
 feature 'Creating Cars' do
   scenario 'can create a car' do
     visit '/'
