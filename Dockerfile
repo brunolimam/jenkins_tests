@@ -1,3 +1,3 @@
 FROM rails:onbuild
-MAINTAINER zach langer zlanger@comverge.com
+MAINTAINER Zach Langer zlanger@comverge.com
 EXPOSE 3000
