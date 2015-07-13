@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Cars' do
   scenario 'can be created' do
-    visit '/'
+    visit '/a'
 
     click_link 'New Car'
 
