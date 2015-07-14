@@ -1,28 +1,49 @@
-== README
+Ruby on Rails on Jenkins on Docker
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Get Jenkins running on our localhost
+  cd into the jenkins_files directory
+  Run: docker build -t GITHUB_USERNAME/dockerjenkins .
+  This builds the images needed to run jenkins
+  Run: docker run -p 8080:8080 --name jenkins --privileged -d GITHUB_USERNAME/dockerjenkins
+  This creates the container with Jenkins at localhost port 8080
 
-Things you may want to cover:
+Have Jenkins run rspec tests
+  Create a new job, name it, select 'Freestyle project', and click 'OK'
+  Fill in 'GitHub project' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app/'
+  Under 'Advanced' check 'Use custom workspace' and input '/tmp/jenkins-buildenv/${JOB_NAME}/workspace'
+  Under 'Source Code Management' check 'Git' and fill 'Repository URL' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app.git'
+  Under 'Build Triggers' check 'Build when a change is pushed to GitHub' and 'Poll SCM'
+  Fill in 'Schedule' with '* * * * *' to check the repo every minute or 'H/5 * * * *' for every 5 minutes
+  Click 'Add build step' and select 'Execute shell' and fill in:
+      # Build the image from the Dockerfile in the repo
+      IMAGE=$(docker build . | tail -1 | awk '{ print $NF }')
+      # Build the directory to be mounted into Docker
+      MNT="$WORKSPACE/.."
+      # Execute the build inside Docker
+      CONTAINER=$(docker run -d -v "$MNT:/opt/project" $IMAGE /bin/bash -c 'cd /opt/project/workspace && rake db:migrate RAILS_ENV=test && rspec')
+      # Attach to the container so that we can see the output
+      docker attach $CONTAINER
+      # Get its exit code as soon as the container stops
+      RC=$(docker wait $CONTAINER)
+      # Delete the container we've just used
+      docker rm $CONTAINER
+      # Exit with the same value as that with which the process exited
+      exit $RC
+  Click 'Add post-build action' and select 'Publish JUnit test result report'
+  Fill in 'Test report XMLs' with 'spec/reports/*.xml'
+  Click 'Save'. It's now ready to be built; The first build takes a long time
 
-* Ruby version
+Have Jenkins watch git repo
+  Go to your github repo for the test you're running
+  On the right side click 'Settings', then 'Webhooks & Services'
+  Select 'Add service' and find 'Jenkins (Git plugin)'
+  Fill in 'Jenkins url' with 'http://localhost:8080/github-webhook/' and click 'Add service'
+  Now go to your profile settings and click 'Personal access tokens'
+  Click 'Generate new token', discribe it, select only 'repo' and 'user', and click 'Generate token'
+  Copy the token to your clipboard
+  Go back to Jenkins and click 'Manage Jenkins', then 'Configure System'
+  Under 'GitHub Web Hook', select 'Let Jenkins auto-manage hook URLs'
+  Fill in 'Username' and 'OAuth token'
+  You can click 'Test Credential' to make sure it's correct
+  Now anytime a change is made to the git repo, it should trigger a build
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
