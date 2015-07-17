@@ -13,7 +13,8 @@ Have Jenkins run rspec tests
   Create a 'New Item', name it, select 'Freestyle project', and click 'OK'
   Fill in 'GitHub project' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app/'
   Under 'Advanced' check 'Use custom workspace' and input '/tmp/jenkins-buildenv/${JOB_NAME}/workspace'
-  Under 'Source Code Management' check 'Git' and fill 'Repository URL' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app.git'
+  Under 'Source Code Management' check 'Git'
+  Fill 'Repository URL' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app.git'
   Under 'Build Triggers' check 'Build when a change is pushed to GitHub' and 'Poll SCM'
   Fill in 'Schedule' with '* * * * *' to check the repo every minute or 'H/5 * * * *' for every 5 minutes
   Click 'Add build step' and select 'Execute shell' and fill in:
