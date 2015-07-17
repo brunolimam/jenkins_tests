@@ -73,16 +73,20 @@ Have a Jenkins slave run the test
     Under 'Private Key', select 'From the Jenkins master ~/.ssh'
     Click Add'
     Click 'Advanced', and fill in 'Port' with '5000'
-    Click 'Save'
+    Click 'Save' (may have to open the slave and click relaunch slave)
     Go back to your job configuration
     Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'SOME_LABEL'
-    Click 'Save'. It's now ready to be built; The first build takes a long time
+    Click 'Save'. It's now ready to be built; The first build takes a lit bit
 Distributing test amoung multiple slaves
-  Emulate a second slave compute by following the same steps as before except change steps to:
-    docker run -p DIFFERENT_PORT:22 --name DIFFERENT_NAME --privileged -t -i GIT_USERNAME/dockerubuntu
-    ssh ID_ADDRESS -p DIFFERENT_PORT
-    Name it 'slave2', select 'Copy Existing Node', fill in 'Copy from' with 'slave1', and click 'OK'
-    Click 'Advanced', and fill in 'Port' with 'DIFFERENT_PORT'
+  Emulate a second slave compute by following the same steps as before except change steps:
+    from:
+      bash build_ubuntu_slave.sh
+    to:
+      docker run -p DIFFERENT_PORT:22 --name DIFFERENT_NAME --privileged -t -i GIT_USERNAME/dockerubuntu
+    change:
+      ssh ID_ADDRESS -p DIFFERENT_PORT
+      Name it 'slave2', select 'Copy Existing Node', fill in 'Copy from' with 'slave1', and click 'OK'
+      Click 'Advanced', and fill in 'Port' with 'DIFFERENT_PORT'
   Change the Label of one slave to car_creation and the other to creating_cars
   Go back to your job configuration
   Rename to 'Car Creation Tests'
