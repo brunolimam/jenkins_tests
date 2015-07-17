@@ -108,6 +108,6 @@ Distributing test amoung multiple slaves
   To:
     rake db:migrate RAILS_ENV=test
     rspec spec/features/creating_cars_spec.rb
-  Click 'Save'. It's now ready to be built; The first build could take a while
+  Click 'Save'. It's now ready to be built; The first build could take a bit
 
 DONE!!!
