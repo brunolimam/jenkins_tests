@@ -3,12 +3,13 @@ Kitematic recommended
 Jenkins build name(s) should not have spaces
 
 Get Jenkins running on our localhost
-  cd into the 'jenkins_files' directory
+  cd into the 'jenkins_files' directory in a Docker terminal
   change build_jenkins.sh to match your information (git username)
   Run 'bash build_jenkins.sh'
   This creates the container with Jenkins at IP_ADDRESS:8080
 
 Have Jenkins run rspec tests
+  Open Jenkins in a browser
   Create a 'New Item', name it, select 'Freestyle project', and click 'OK'
   Fill in 'GitHub project' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app/'
   Under 'Advanced' check 'Use custom workspace' and input '/tmp/jenkins-buildenv/${JOB_NAME}/workspace'
@@ -42,10 +43,10 @@ Have a Jenkins slave run the test
     This will attach us to the Jenkins container
     Run 'ssh-keygen', save it to the default location and a password if you so wish
   Second we have to emulate a slave on the localhost that we can ssh to
-    In a new terminal, cd into the 'ubuntu_slave' directory
+    In a new Docker terminal, cd into the 'ubuntu_slave' directory
     change build_ubuntu_slave to match your information (git username)
     Run 'bash build_ubuntu_slave.sh'
-    Run 'docker exec -it ubuntu_slave /bin/bash'
+    Run 'docker exec -it ubuntu_slave /bin/bash' (you may have to ctrl c first)
     Go back to your terminal attached to the Jenkins container
     cd /root/.ssh
     Run 'cat id_rsa.pub' and copy the whole thing
