@@ -1,4 +1,5 @@
 FROM ruby:2.2
+MAINTAINER Zach Langer zlanger@comverge.com
 
 RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
@@ -6,7 +7,6 @@ RUN apt-get update && apt-get install -y mysql-client postgresql-client sqlite3 
 
 ENV RAILS_VERSION 4.0.0
 
-MAINTAINER zach langer
 EXPOSE 3000
 EXPOSE 22
 

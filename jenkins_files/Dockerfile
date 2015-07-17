@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Zach Langer
+MAINTAINER Zach Langer zlanger@comverge.com
 ENV REFRESHED_AT 2015-07-14
 
 # install necessary packages for running jenkins and docker
