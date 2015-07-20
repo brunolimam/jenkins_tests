@@ -51,7 +51,6 @@ Have a Jenkins slave run the test
         cd /root/.ssh
         echo "PASTE_SSH" >> authorized_keys  (you need the double quotes)
         service ssh start
-    You should now have an open ssh server
     Go back to your terminal attached to the Jenkins container
       We can now test the connection
       Run 'ssh ID_ADDRESS -p 5000'
