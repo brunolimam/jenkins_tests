@@ -4,7 +4,6 @@ RUN apt-get update
 RUN apt-get install -y ruby
 RUN apt-get install -y rails
 RUN apt-get install -y openjdk-7-jdk
-RUN apt-get install -y vim
 RUN apt-get install -y openssh-server
 RUN apt-get install -y git
 RUN apt-get install zlib1g-dev

@@ -11,16 +11,14 @@ Get Jenkins running on our localhost
 
 Have Jenkins run rspec tests
   Open Jenkins in a browser
-  Create a 'New Item', name it, select 'Freestyle project', and click 'OK'
+  Create a 'New Item', name it 'Car Creation Tests', select 'Freestyle project', and click 'OK'
   Fill in 'GitHub project' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app/'
   Under 'Advanced' check 'Use custom workspace' and fill in with '/tmp/jenkins-buildenv/${JOB_NAME}/workspace' (actually type: JOB_NAME)
   Under 'Source Code Management' check 'Git'
   Fill 'Repository URL' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app.git'
   Under 'Build Triggers' check 'Build when a change is pushed to GitHub' and 'Poll SCM'
   Fill in 'Schedule' with '* * * * *' to check the repo every minute or 'H/5 * * * *' for every 5 minutes
-  Click 'Add build step' and select 'Execute shell' and fill in:
-      rake db:migrate RAILS_ENV=test
-      rspec
+  Click 'Add build step' and select 'Execute shell' and fill in 'rspec'
   Click 'Add post-build action' and select 'Publish JUnit test result report'
   Fill in 'Test report XMLs' with 'spec/reports/*.xml'
   Click 'Save'. The build won't work till it runs on our slave, which will be created later.
@@ -33,33 +31,34 @@ Have Jenkins watch git repo
 
 Have a Jenkins slave run the test
   First we have to generate an SSH key to connect to the slave nodes
-    While in the 'jenkins_files' directory run 'docker exec -it jenkins /bin/bash'
+    Go back to your tereminal and while in the 'jenkins_files' directory run 'docker exec -it jenkins /bin/bash'
     This will attach us to the Jenkins container
-    Run 'ssh-keygen', save it to the default location and a password if you so wish
-  Second we have to emulate a slave on the localhost that we can ssh to
+    Run 'ssh-keygen', save it to the default location and add a password if you so wish
+
+  Emulate a slave on the localhost that we can ssh to
     In a new Docker terminal, cd into the 'ubuntu_slave' directory
-    change build_ubuntu_slave to match your information (git username)
-    Run 'bash build_ubuntu_slave.sh'
-    Run 'docker exec -it ubuntu_slave /bin/bash' (you will have to ctrl c first)
+      change build_ubuntu_slave to match your information (your git username or remove the whole prefix)
+      Run 'bash build_ubuntu_slave.sh' then ctrl-c/exit
+      Run 'docker exec -it ubuntu_slave /bin/bash' (may have to restart the container)
     Go back to your terminal attached to the Jenkins container
-    cd /root/.ssh
-    Run 'cat id_rsa.pub' and copy the whole thing
-    Go back to your teminal attached to the slave container
-    Run:
       cd /root/.ssh
-      echo "PASTE_SSH" >> authorized_keys  (you need the double quotes)
-      service ssh start
+      Run 'cat id_rsa.pub' and copy the whole thing
+    Go back to your teminal attached to the slave container
+      Run:
+        cd /root/.ssh
+        echo "PASTE_SSH" >> authorized_keys  (you need the double quotes)
+        service ssh start
     You should now have an open ssh server
     Go back to your terminal attached to the Jenkins container
-    We can now test the connection
+      We can now test the connection
       Run 'ssh ID_ADDRESS -p 5000'
       You will be prompted to continue connecting, type 'yes'
-      If you connect, it worked and you can exit
+      If you connect, it worked and you can 'exit'
   Get Jenkins to connect to the slave
     Go back to Jenkins and click 'Manage Jenkins', then 'Manage Nodes', then 'New Node'
     Name it 'slave1', select 'Dumb Slave', and click 'OK'
     Fill in 'Remote root directory' with '/var/jenkins'
-    Fill in 'Labels' with 'SOME_LABEL'
+    Fill in 'Labels' with 'car_creation'
     Make sure 'Launch method' is set to 'Launch slave agents on Unix machines via SSH'
     Fill in 'Host' with 'IP_ADDRESS'
     By credentials click 'Add'
@@ -69,39 +68,28 @@ Have a Jenkins slave run the test
     Click 'Advanced', and fill in 'Port' with '5000'
     Click 'Save' (may have to open the slave and click relaunch slave)
     Go back to your job configuration
-    Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'SOME_LABEL'
-    Click 'Save'. It's now ready to be built; The first build takes a lit bit
+    Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'car_creation'
+    Click 'Save'. It's now ready to be 'Build Now'; The first build takes a lit bit
+
 Distributing test amoung multiple slaves
-  Emulate a second slave compute by following the same steps as before except change steps:
-    from:
-      bash build_ubuntu_slave.sh
-    to:
+  You can exit out of your first slave and run:
       docker run -p DIFFERENT_PORT:22 --name DIFFERENT_NAME --privileged -t -i GIT_USERNAME/dockerubuntu
-    change:
-      ssh ID_ADDRESS -p DIFFERENT_PORT
-      Name it 'slave2', select 'Copy Existing Node', fill in 'Copy from' with 'slave1', and click 'OK'
+  Copy and paste the ssh key into authorized_keys again
+  ssh ID_ADDRESS -p DIFFERENT_PORT
+  Create a new node 'Copy Existing Node' named slave2:
+    Name it 'slave2', select 'Copy Existing Node', fill in 'Copy from' with 'slave1', and click 'OK'
       Click 'Advanced', and fill in 'Port' with 'DIFFERENT_PORT'
   Change the Label of one slave to car_creation and the other to creating_cars
   Go back to your job configuration
-  Rename to 'Car Creation Tests'
-  Change the 'Label Expression' to 'car_creation'
-  Change:
-    rake db:migrate RAILS_ENV=test
-    rspec
-  To:
-    rake db:migrate RAILS_ENV=test
+  Change the execute shell:
     rspec spec/features/car_creation_spec.rb
-  Click 'Save'. It's now ready to be built; The first build takes a long time
+  Click 'Save'. It's will now run the specified tests; The first build takes a bit
   Create another 'New Item'
   Name it 'Creating Cars Tests'
   Select 'Copy existing Item' and fill in 'Car Creation Tests' and click 'OK'
   Change the 'Label Expression' to 'creating_cars'
-  Change:
-    rake db:migrate RAILS_ENV=test
-    rspec spec/features/car_creation_spec.rb
-  To:
-    rake db:migrate RAILS_ENV=test
+  Change the execute shell:
     rspec spec/features/creating_cars_spec.rb
-  Click 'Save'. It's now ready to be built; The first build could take a bit
+  Click 'Save'. It's now ready to 'Build Now'; The first build could take a bit
 
 DONE!!!
