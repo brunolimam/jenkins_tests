@@ -68,7 +68,7 @@ Have a Jenkins slave run the test
     Under 'Private Key', select 'From the Jenkins master ~/.ssh'
     Click Add'
     Click 'Advanced', and fill in 'Port' with '5000'
-    Click 'Save' (keep relaunching the slave till it works)
+    Click 'Save' (Keep relaunching, configuring and saving till it comes online)
     Go back to 'Car Creation Tests' job configuration
       Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'car_creation'
       Click 'Save'. It's now ready to be 'Build Now'
