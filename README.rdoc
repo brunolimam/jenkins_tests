@@ -1,6 +1,7 @@
 Ruby on Rails on Jenkins on Docker
 Kitematic recommended
-Jenkins build name(s) should not have spaces
+Clone this Directory
+Docker name(s) should not have spaces
 
 Get Jenkins running on our localhost
   cd into the 'jenkins_files' directory in a Docker terminal
