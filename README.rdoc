@@ -18,7 +18,7 @@ Have Jenkins run rspec tests
   Fill 'Repository URL' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app.git'
   Under 'Build Triggers' check 'Build when a change is pushed to GitHub' and 'Poll SCM'
   Fill in 'Schedule' with '* * * * *' to check the repo every minute or 'H/5 * * * *' for every 5 minutes
-  Click 'Add build step' and select 'Execute shell' and fill in 'rspec'
+  Click 'Add build step' and select 'Execute shell' and fill with 'rspec'
   Click 'Add post-build action' and select 'Publish JUnit test result report'
   Fill in 'Test report XMLs' with 'spec/reports/*.xml'
   Click 'Save'. The build won't work till it runs on our slave, which will be created later.
