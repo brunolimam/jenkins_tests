@@ -10,7 +10,7 @@ Get Jenkins running on our localhost
     This creates the container named Jenkins at port 8080
 
 Have Jenkins run rspec tests
-  Open Jenkins in a browser (IP_ADDRESS:8080)
+  Open Jenkins in a browser (IP_ADDRESS:8080 or localhost:8080)
   Create a 'New Item', name it 'Car Creation Tests', select 'Freestyle project', and click 'OK'
   Fill in 'GitHub project' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app/'
   Under 'Advanced' check 'Use custom workspace' and fill in with '/tmp/jenkins-buildenv/${JOB_NAME}/workspace' (actually type: JOB_NAME)
@@ -45,7 +45,7 @@ Have a Jenkins slave run the test
       Run 'docker exec -it ubuntu_slave /bin/bash' (may have to 'docker start ubuntu_slave')
     Go back to your terminal attached to the Jenkins container
       cd /root/.ssh
-      Run 'cat id_rsa.pub' and copy the whole output
+      Run 'cat id_rsa.pub' and copy the output
     Go back to your teminal attached to the slave container
       Run:
         cd /root/.ssh
@@ -71,18 +71,18 @@ Have a Jenkins slave run the test
     Click 'Save' (Keep relaunching, configuring and saving till it comes online)
     Go back to 'Car Creation Tests' job configuration
       Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'car_creation'
-      Click 'Save'. It's now ready to be 'Build Now'
+      Click 'Save'. It's now ready to 'Build Now'
 
 Distributing test amoung multiple slaves
   Return to your slave1 terminal
   You can 'exit' out of ubuntu_slave and run:
-      docker run -p DIFFERENT_PORT:22 --name ubuntu_slave2 --privileged -t -i GIT_USERNAME/dockerubuntu
+      docker run -p PORT_NUM:22 --name ubuntu_slave2 --privileged -t -i GIT_USERNAME/dockerubuntu (PORT_NUM!=5000)
   Copy and paste the ssh key into authorized_keys again
-  In the Jenkins terminal 'ssh ID_ADDRESS -p DIFFERENT_PORT'
+  In the Jenkins terminal 'ssh ID_ADDRESS -p PORT_NUM'
   In Jenkins:
   Create a new node:
     Name it 'slave2', select 'Copy Existing Node', fill in 'Copy from' with 'slave1', and click 'OK'
-    Click 'Advanced', and fill in 'Port' with 'DIFFERENT_PORT'
+    Click 'Advanced', and fill in 'Port' with 'PORT_NUM'
     Change the Label to 'creating_cars'
   Go back to your 'Car Creation Tests' job configuration
   Change the execute shell to:
