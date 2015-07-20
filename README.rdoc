@@ -1,16 +1,16 @@
 Ruby on Rails on Jenkins on Docker
 Kitematic recommended
-Clone this Directory
+Fork and clone this Directory
 Docker name(s) should not have spaces
 
 Get Jenkins running on our localhost
   cd into the 'jenkins_files' directory in a Docker terminal
-  change build_jenkins.sh to match your information (git username)
+  change build_jenkins.sh to match your information (your git username or remove the whole prefix)
   Run 'bash build_jenkins.sh'
-  This creates the container with Jenkins at IP_ADDRESS:8080
+    This creates the container named Jenkins at port 8080
 
 Have Jenkins run rspec tests
-  Open Jenkins in a browser
+  Open Jenkins in a browser (IP_ADDRESS:8080)
   Create a 'New Item', name it 'Car Creation Tests', select 'Freestyle project', and click 'OK'
   Fill in 'GitHub project' with 'https://github.com/GITHUB_USERNAME/my_first_rails_app/'
   Under 'Advanced' check 'Use custom workspace' and fill in with '/tmp/jenkins-buildenv/${JOB_NAME}/workspace' (actually type: JOB_NAME)
@@ -30,19 +30,22 @@ Have Jenkins watch git repo
   Fill in 'Jenkins url' with 'http://IP_ADDRESS:8080/github-webhook/' and click 'Add service'
 
 Have a Jenkins slave run the test
-  First we have to generate an SSH key to connect to the slave nodes
-    Go back to your tereminal and while in the 'jenkins_files' directory run 'docker exec -it jenkins /bin/bash'
+  Generate an SSH key to connect to the slave nodes
+    Go back to your tereminal in the 'jenkins_files' directory and run 'docker exec -it jenkins /bin/bash'
     This will attach us to the Jenkins container
     Run 'ssh-keygen', save it to the default location and add a password if you so wish
 
   Emulate a slave on the localhost that we can ssh to
     In a new Docker terminal, cd into the 'ubuntu_slave' directory
       change build_ubuntu_slave to match your information (your git username or remove the whole prefix)
-      Run 'bash build_ubuntu_slave.sh' then ctrl-c/exit
-      Run 'docker exec -it ubuntu_slave /bin/bash' (may have to restart the container)
+      Run 'bash build_ubuntu_slave.sh'
+        This creates a container named ubuntu_slave at port 5000
+        It will appear to already be attached however it's typically broken(IDK why)
+        Run ctrl-c or exit(whichever works)
+      Run 'docker exec -it ubuntu_slave /bin/bash' (may have to 'docker start ubuntu_slave')
     Go back to your terminal attached to the Jenkins container
       cd /root/.ssh
-      Run 'cat id_rsa.pub' and copy the whole thing
+      Run 'cat id_rsa.pub' and copy the whole output
     Go back to your teminal attached to the slave container
       Run:
         cd /root/.ssh
@@ -66,30 +69,31 @@ Have a Jenkins slave run the test
     Under 'Private Key', select 'From the Jenkins master ~/.ssh'
     Click Add'
     Click 'Advanced', and fill in 'Port' with '5000'
-    Click 'Save' (may have to open the slave and click relaunch slave)
-    Go back to your job configuration
-    Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'car_creation'
-    Click 'Save'. It's now ready to be 'Build Now'; The first build takes a lit bit
+    Click 'Save' (keep relaunching the slave till it works)
+    Go back to 'Car Creation Tests' job configuration
+      Select 'Restrict where this project can be run' and fill in 'Label Expression' with 'car_creation'
+      Click 'Save'. It's now ready to be 'Build Now'
 
 Distributing test amoung multiple slaves
-  You can exit out of your first slave and run:
-      docker run -p DIFFERENT_PORT:22 --name DIFFERENT_NAME --privileged -t -i GIT_USERNAME/dockerubuntu
+  Return to your slave1 terminal
+  You can 'exit' out of ubuntu_slave and run:
+      docker run -p DIFFERENT_PORT:22 --name ubuntu_slave2 --privileged -t -i GIT_USERNAME/dockerubuntu
   Copy and paste the ssh key into authorized_keys again
-  ssh ID_ADDRESS -p DIFFERENT_PORT
-  Create a new node 'Copy Existing Node' named slave2:
+  In the Jenkins terminal 'ssh ID_ADDRESS -p DIFFERENT_PORT'
+  In Jenkins:
+  Create a new node:
     Name it 'slave2', select 'Copy Existing Node', fill in 'Copy from' with 'slave1', and click 'OK'
-      Click 'Advanced', and fill in 'Port' with 'DIFFERENT_PORT'
-  Change the Label of one slave to car_creation and the other to creating_cars
-  Go back to your job configuration
-  Change the execute shell:
+    Click 'Advanced', and fill in 'Port' with 'DIFFERENT_PORT'
+    Change the Label to 'creating_cars'
+  Go back to your 'Car Creation Tests' job configuration
+  Change the execute shell to:
     rspec spec/features/car_creation_spec.rb
-  Click 'Save'. It's will now run the specified tests; The first build takes a bit
+  Click 'Save'. It's will now run the specified tests
   Create another 'New Item'
-  Name it 'Creating Cars Tests'
-  Select 'Copy existing Item' and fill in 'Car Creation Tests' and click 'OK'
-  Change the 'Label Expression' to 'creating_cars'
-  Change the execute shell:
-    rspec spec/features/creating_cars_spec.rb
-  Click 'Save'. It's now ready to 'Build Now'; The first build could take a bit
+    Name it 'Creating Cars Tests' select 'Copy existing Item' and fill in 'Car Creation Tests' and click 'OK'
+    Change the 'Label Expression' to 'creating_cars'
+    Change the execute shell to:
+      rspec spec/features/creating_cars_spec.rb
+    Click 'Save'. It's now ready to 'Build Now'
 
 DONE!!!
