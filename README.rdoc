@@ -30,14 +30,6 @@ Have Jenkins watch git repo
   On the right side click 'Settings', then 'Webhooks & Services'
   Select 'Add service' and find 'Jenkins (Git plugin)'
   Fill in 'Jenkins url' with 'http://IP_ADDRESS:8080/github-webhook/' and click 'Add service'
-  Now go to your profile settings and click 'Personal access tokens'
-  Click 'Generate new token', discribe it, select only 'repo' and 'user', and click 'Generate token'
-  Copy the token to your clipboard
-  Go back to Jenkins and click 'Manage Jenkins', then 'Configure System'
-  Under 'GitHub Web Hook', select 'Let Jenkins auto-manage hook URLs'
-  Fill in your 'Username' and 'OAuth token'
-  You can click 'Test Credential' to make sure it's correct
-  Now anytime a change is pushed to the git repo, it should trigger a build
 
 Have a Jenkins slave run the test
   First we have to generate an SSH key to connect to the slave nodes
