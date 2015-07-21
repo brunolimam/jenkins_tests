@@ -17,7 +17,7 @@ RUN mkdir -p $JENKINS_HOME/plugins
 RUN curl -sf -o /opt/jenkins/jenkins.war -L $JENKINS_MIRROR/war-stable/latest/jenkins.war
 
 # install plugins
-RUN for plugin in chucknorris greenballs scm-api github github-api multiple-scms git-client git docker-build-step docker authentication-tokens docker-commons rubyMetrics rvm token-macro ruby ruby-runtime rake credentials ssh-credentials ssh-slaves durable-task slave-setup ws-cleanup ;\
+RUN for plugin in chucknorris greenballs scm-api github github-api multiple-scms git-client git authentication-tokens token-macro ruby credentials ssh-credentials ssh-slaves durable-task slave-setup ws-cleanup ;\
     do curl -sf -o $JENKINS_HOME/plugins/${plugin}.hpi \
        -L $JENKINS_MIRROR/plugins/${plugin}/latest/${plugin}.hpi ; done
 
