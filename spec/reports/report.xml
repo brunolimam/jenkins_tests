@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites errors="0" failures="0" skipped="0" tests="2" time="0.113103" timestamp="2015-07-14T11:19:32-06:00">
+<testsuites errors="0" failures="0" skipped="0" tests="2" time="0.109844" timestamp="2015-07-23T09:01:55-06:00">
   <testsuite name="Cars" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Cars can be created" time="0.089092">
+    <testcase name="Cars can be created" time="0.082799">
     </testcase>
   </testsuite>
   <testsuite name="Creating Cars" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Creating Cars can create a car" time="0.023194">
+    <testcase name="Creating Cars can create a car" time="0.02613">
     </testcase>
   </testsuite>
 </testsuites>
