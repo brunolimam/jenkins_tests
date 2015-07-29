@@ -20,5 +20,5 @@ COPY Gemfile /usr/src/app/
 COPY Gemfile.lock /usr/src/app/
 RUN bundle install
 
-COPY create_ssh_link.sh /usr/src/app/
-RUN bash create_ssh_link.sh
+#COPY create_ssh_link.sh /usr/src/app/
+#RUN bash create_ssh_link.sh
