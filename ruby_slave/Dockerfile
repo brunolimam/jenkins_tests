@@ -15,5 +15,5 @@ RUN apt-get install -y openjdk-7-jdk
 RUN apt-get install -y vim
 RUN apt-get install -y openssh-server
 
-COPY create_ssh_link.sh /
-RUN bash create_ssh_link.sh
+#COPY create_ssh_link.sh /
+#RUN bash create_ssh_link.sh
