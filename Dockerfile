@@ -25,5 +25,5 @@ RUN apt-get install -y openjdk-7-jdk
 RUN apt-get install -y openssh-server
 RUN apt-get install -y rails
 
-COPY create_ssh_link.sh /usr/src/app/
-RUN bash create_ssh_link.sh
+#COPY create_ssh_link.sh /usr/src/app/
+#RUN bash create_ssh_link.sh
